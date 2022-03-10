@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import Style from "../Styles/miniplayer.module.css";
-import Img from "../Assets/images/3.jpg";
+import ReactPlayer from "react-player/youtube";
 
-export default function Miniplayer() {
-  const [open, setOpen] = useState(true);
+export default function Miniplayer({ id, title }) {
+  const [open, setOpen] = useState(false);
 
-  const video = (
-    <>
-      <img src={Img} alt="img" />
-      <p>#23 React Hooks Bangla - React useReducer hook Bangla</p>
-    </>
-  );
+  // const video = (
+  //   <>
+  //     <ReactPlayer
+  //       url={`https://www.youtube.com/watch?v=${id}`}
+  //       playing={open}
+  //       controls
+  //     />
+  //     <p>{title}</p>
+  //   </>
+  // );
 
   return (
     <div
       className={
-        open === true
+        open === false
           ? `${Style.miniPlayer} ${Style.floatingBtn}`
           : `${Style.miniPlayer}`
       }
@@ -32,7 +36,15 @@ export default function Miniplayer() {
       >
         close
       </span>
-      {open === true ? null : video}
+
+      <ReactPlayer
+        className={Style.player}
+        url={`https://www.youtube.com/watch?v=${id}`}
+        playing={open}
+        controls
+      />
+      <p>{title}</p>
+      {/* {open === false ? null : video} */}
     </div>
   );
 }
