@@ -24,7 +24,7 @@ export default function UseFetch(url, method, headers) {
       }
     }
     requestFetch();
-  }, []);
+  }, [url, method, headers]);
 
   return { loading, error, result };
 }
