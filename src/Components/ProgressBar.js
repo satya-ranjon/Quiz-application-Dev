@@ -1,26 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Style from "../Styles/progressbar.module.css";
+import React, { useRef, useState } from "react";
+import Classes from "../Styles/progressbar.module.css";
 import Button from "./Button";
 
-export default function ProgressBar() {
+export default function ProgressBar({ next, prev, progress, submit }) {
+  const [tooltip, setTooltipe] = useState(false);
+  const tooltipeRef = useRef();
+
+  function togleTooltipe() {
+    if (tooltip) {
+      setTooltipe(false);
+      tooltipeRef.current.style.display = "none";
+    } else {
+      setTooltipe(true);
+      tooltipeRef.current.style.left = `calc(${progress}% - 65px)`;
+      tooltipeRef.current.style.display = "block";
+    }
+  }
+
   return (
-    <div className={Style.progressBar}>
-      <div className={Style.backButton}>
+    <div className={Classes.progressBar}>
+      <div className={Classes.backButton} onClick={prev}>
         <span className="material-icons-outlined"> arrow_back </span>
       </div>
-      <div className={Style.rangeArea}>
-        <div className={Style.tooltip}>24% Cimplete!</div>
-        <div className={Style.rangeBody}>
-          <div className={Style.progress} style={{ width: "40%" }}></div>
+      <div className={Classes.rangeArea}>
+        <div className={Classes.tooltip} ref={tooltipeRef}>
+          {progress}% Cimplete!
+        </div>
+        <div className={Classes.rangeBody}>
+          <div
+            className={Classes.progress}
+            style={{ width: `${progress}%` }}
+            onMouseOver={togleTooltipe}
+            onMouseOut={togleTooltipe}
+          ></div>
         </div>
       </div>
-      <Link to="/result">
-        <Button className={Style.next}>
-          <span>Next Question</span>
-          <span className="material-icons-outlined"> arrow_forward </span>
-        </Button>
-      </Link>
+      <Button
+        className={Classes.next}
+        onClick={progress === 100 ? submit : next}
+      >
+        <span> {progress === 100 ? "Submit" : "Next Question"}</span>
+        <span className="material-icons-outlined"> arrow_forward </span>
+      </Button>
     </div>
   );
 }
